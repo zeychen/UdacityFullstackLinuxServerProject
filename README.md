@@ -107,10 +107,12 @@ Clone Item Catalog:
 `sudo -u www-data git clone https://github.com/zeychen/UdacityFullstackItemCatalogProject.git /var/www/html/public_html/ItemCatalog`
 
 <h4>Setup Item Catalog App (<a href="https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps">citation</a>)</h4>
-In /var/www/html/public_html/ItemCatalog/ directory 
+In /var/www/html/public_html/ItemCatalog/ directory:
 Create `__init__.py`
 Change `engine = create_engine('sqlite:///catagories.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')` in `__init__.py`, `items_db_query.py`, and `items_db_setup.py`
+Change `app.run(host='0.0.0.0', port=5000)` to `app.run()`
 Insert `/var/www/html/public_html/ItemCatalog/` in front of all `client_secrets.json` file location
+
 Password not shown for security reasons
 
 <h4>Update Google OAuth</h4>
@@ -134,7 +136,7 @@ Alias /static /var/www/html/public_html/ItemCatalog/static
 ```
 
 <h4>Create .wsgi File </h4>
-In /var/www/html/public_html/ItemCatalog/ directory 
+In /var/www/html/public_html/ItemCatalog/ directory:
 Create items_webserver.wsgi and add
 ```
 import sys
