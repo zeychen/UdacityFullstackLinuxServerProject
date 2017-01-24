@@ -21,33 +21,33 @@ Resolve host issue (<a href="http://askubuntu.com/questions/59458/error-message-
 
 Add `ip-10-20-9-8` to end of `127.0.0.1 localhost` in /etc/hosts
 
-```reboot```
+`reboot`
 
 Now grader can login and use sudo
 
 <h4>Set up SSH keys for user grader</h4>
 Create .ssh file:
 
-```mkdir /home/grader/.ssh```
+`mkdir /home/grader/.ssh`
 
 Create copy authorized_keys file from root:
 
-```cp /home/root/.ssh authorized)keys /home/grader/.ssh/authorized_keys```
+`cp /home/root/.ssh authorized)keys /home/grader/.ssh/authorized_keys`
 
 Set permissions for .ssh directory and authorized_key file:
 
-```chmod 700 .ssh```
+`chmod 700 .ssh`
 
-```chmod 644 .ssh/authorized_keys`
+`chmod 644 .ssh/authorized_keys`
 
 <h4>Update all installed packages</h4>
 Update package indexes:
 
-```apt-get update```
+`apt-get update`
 
 Upgrade installed packages
 
-```apt-get upgrade```
+`apt-get upgrade`
 
 <h4>Change SSH port from 22 to 2200</h4>
 Change line Port 22 to Port 2200 in /etc/ssh/sshd_config
