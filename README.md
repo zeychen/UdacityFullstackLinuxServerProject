@@ -6,13 +6,13 @@ The goal is to take a baseline installation of a Linux distribution on a virtual
 
 Item Catalog Website can be accessed <a href="http://35.162.219.188/">here</a>
 
-<h3>Configurations and Software Installed</h3>
+<h2>Configurations and Software Installed</h2>
 All done in root user. If not done in root user then need to use sudo in front of commands.
 
-<h4>Add user `grader`</h4>
+<h3>Add user `grader`</h3>
 `sudo adduser grader`
 
-<h4>Give `grader` sudo permission</h4>
+<h3>Give `grader` sudo permission</h3>
 Add grader to sudo group (<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html">citation</a>):
 
 ```usermod -aG sudo grader```
@@ -23,76 +23,78 @@ Add `ip-10-20-9-8` to end of `127.0.0.1 localhost` in /etc/hosts<br>
 Now grader can login and use sudo
 
 
-<h4>Set up SSH keys for user grader</h4>
+<h3>Set up SSH keys for user grader</h3>
 Create .ssh file:<br>
 `mkdir /home/grader/.ssh`<br>
 Create copy authorized_keys file from root:<br>
 `cp /home/root/.ssh authorized)keys /home/grader/.ssh/authorized_keys`<br>
 Set permissions for .ssh directory and authorized_key file:<br>
-`chmod 700 .ssh`<br>
-`chmod 644 .ssh/authorized_keys`<br>
+```
+chmod 700 .ssh
+chmod 644 .ssh/authorized_keys
+```
 
 
-<h4>Update all installed packages</h4>
+<h3>Update all installed packages</h3>
 Update package indexes:<br>
 `apt-get update`<br>
 Upgrade installed packages<br>
 `apt-get upgrade`
 
-<h4>Change SSH port from 22 to 2200</h4>
+<h3>Change SSH port from 22 to 2200</h3>
 Change line Port 22 to Port 2200 in /etc/ssh/sshd_config<br>
 Restart SSH service:<br>
 ```service ssh restart```
 Now need to add -p 2200 to log in<br>
 
-<h4>Configure Uncomplicated Firewall (UFW)</h4>
-Block all incoming connections on all ports:
-```ufw default deny incoming```
-Allow outgoing connection on all ports:
-```ufw default allow outgoing```
-Allow incoming connection for SSH on port 2200:
-```ufw allow 2200/tcp```
-Allow incoming connections for HTTP on port 80:
-```ufw allow www```
-Allow incoming connection for NTP on port 123:
-```ufw allow ntp```
-To check the rules that have been added before enabling the firewall use:
-```ufw show added```
-To enable the firewall, use:
-```ufw enable```
-To check the status of the firewall, use:
+<h3>Configure Uncomplicated Firewall (UFW)</h3>
+Block all incoming connections on all ports:<br>
+```ufw default deny incoming```<br>
+Allow outgoing connection on all ports:<br>
+```ufw default allow outgoing```<br>
+Allow incoming connection for SSH on port 2200:<br>
+```ufw allow 2200/tcp```<br>
+Allow incoming connections for HTTP on port 80:<br>
+```ufw allow www```<br>
+Allow incoming connection for NTP on port 123:<br>
+```ufw allow ntp```<br>
+To check the rules that have been added before enabling the firewall use:<br>
+```ufw show added```<br>
+To enable the firewall, use:<br>
+```ufw enable```<br>
+To check the status of the firewall, use:<br>
 ```ufw status```
 
-<h4>Configure the local timezone to UTC</h4>
-```sudo dpkg-reconfigure tzdata```
+<h3>Configure the local timezone to UTC</h3>
+```sudo dpkg-reconfigure tzdata```<br>
 Select local timezone accordingly
 
-<h4>Install Apache to serve a Python mod_wsgi application</h4>
+<h3>Install Apache to serve a Python mod_wsgi application</h3>
 ```
 apt-get install apache2
 sudo apt-get install libapache2-mod-wsgi python-dev
 sudo a2enmod wsgi
 ```
 
-<h4>Install PostgreSQL</h4>
-Instal PostgreSQL (<a href="https://help.ubuntu.com/community/PostgreSQL">citation</a>):
+<h3>Install PostgreSQL</h3>
+Instal PostgreSQL (<a href="https://help.ubuntu.com/community/PostgreSQL">citation</a>):<br>
 ```apt-get install postgresql postgresql-contrib```
 
-<h4>Configure PostgreSQL</h4>
-Disallow remote connections (<a href="https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps">citation</a>): 
-Check `/etc/postgresql/9.3/main/pg_hba.conf` to make sure host IP connects to localhost, if not then
-change IPv4 local connections to 
-```host    all             all             127.0.0.1               md5```
-and IPv6 local connections to 
-```host    all             all             ::1               md5```
-Create PostgreSQL user named catalog (<a href="https://help.ubuntu.com/community/PostgreSQL">citation</a>):
-```sudo -u postgres createuser -P catalog```
-Give user catalog ownership of database catalog:
-```sudo -u postgres createdb -O catalog catalog```
-Restart server:
+<h3>Configure PostgreSQL</h3>
+Disallow remote connections (<a href="https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps">citation</a>): <br>
+Check `/etc/postgresql/9.3/main/pg_hba.conf` to make sure host IP connects to localhost, if not then<br>
+change IPv4 local connections to <br>
+```host    all             all             127.0.0.1               md5```<br>
+and IPv6 local connections to <br>
+```host    all             all             ::1               md5```<br>
+Create PostgreSQL user named catalog (<a href="https://help.ubuntu.com/community/PostgreSQL">citation</a>):<br>
+```sudo -u postgres createuser -P catalog```<br>
+Give user catalog ownership of database catalog:<br>
+```sudo -u postgres createdb -O catalog catalog```<br>
+Restart server:<br>
 ```sudo /etc/init.d/postgresql reload```
 
-<h4>Install Flask and SQLAlchemy</h4>
+<h3>Install Flask and SQLAlchemy</h3>
 ```
 sudo apt-get install python-psycopg2 python-flask
 sudo apt-get install python-sqlalchemy python-pip
@@ -101,37 +103,32 @@ sudo pip install requests
 sudo pip install httplib2
 ```
 
-<h4>Install Git</h4>
+<h3>Install Git</h3>
 ```sudo apt-get install git```
 
-<h4>Clone Item Catalog App From Github</h4>
-Create directory to store Item Catalog App:
-```mkdir /var/www/html/public_html/ItemCatalog```
-Set permissions for item-catalog directory so www-data can access:
-```chown www-data:www-data /var/www/html/public_html/ItemCatalog/```
-Clone Item Catalog:
+<h3>Clone Item Catalog App From Github</h3>
+Create directory to store Item Catalog App:<br>
+```mkdir /var/www/html/public_html/ItemCatalog```<br>
+Set permissions for item-catalog directory so www-data can access:<br>
+```chown www-data:www-data /var/www/html/public_html/ItemCatalog/```<br>
+Clone Item Catalog:<br>
 ```sudo -u www-data git clone https://github.com/zeychen/UdacityFullstackItemCatalogProject.git /var/www/html/public_html/ItemCatalog```
 
-<h4>Setup Item Catalog App (<a href="https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps">citation</a>)</h4>
-In /var/www/html/public_html/ItemCatalog/ directory:
-Create `__init__.py`
-
-Change `engine = create_engine('sqlite:///catagories.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')` in `items_webserver.py`, `items_db_query.py`, and `items_db_setup.py`
-
-Change `app.run(host='0.0.0.0', port=5000)` to `app.run()` in `items_webserver.py`
-
-Take `app.secret_key` out of `if __name__ == __main__:` in `items_webserver.py`
-
-Insert `/var/www/html/public_html/ItemCatalog/` in front of all `client_secrets.json` file locations within `items_webserver.py`
-
+<h3>Setup Item Catalog App (<a href="https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps">citation</a>)</h3>
+In /var/www/html/public_html/ItemCatalog/ directory:<br>
+Create `__init__.py`<br>
+Change `engine = create_engine('sqlite:///catagories.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')` in `items_webserver.py`, `items_db_query.py`, and `items_db_setup.py`<br>
+Change `app.run(host='0.0.0.0', port=5000)` to `app.run()` in `items_webserver.py`<br>
+Take `app.secret_key` out of `if __name__ == __main__:` in `items_webserver.py`<br>
+Insert `/var/www/html/public_html/ItemCatalog/` in front of all `client_secrets.json` file locations within `items_webserver.py`<br>
 
 Password not shown for security reasons
 
-<h4>Update Google OAuth</h4>
-Change `localhost` in client_secrets.json to `http://35.162.219.188`
+<h3>Update Google OAuth</h3>
+Change `localhost` in client_secrets.json to `http://35.162.219.188`<br>
 Change Authorized JavaScript origins in Google Developers Console
 
-<h4>Configure Apache to use items_webserver.wsgi</h4>
+<h3>Configure Apache to use items_webserver.wsgi</h3>
 Add the following after <VirtualHost> and right before </VirtualHost> (<a href="http://flask.pocoo.org/docs/0.12/deploying/mod_wsgi/">citation</a>):
 ```
 WSGIDaemonProcess catalog user=www-data group=www-data threads=5 home=/var/www/html/public_html/ItemCatalog/items_webserver.wsgi
@@ -147,7 +144,7 @@ Alias /static /var/www/html/public_html/ItemCatalog/static
 </Directory>
 ```
 
-<h4>Create .wsgi File </h4>
+<h3>Create .wsgi File </h3>
 In /var/www/html/public_html/ItemCatalog/ directory:
 Create items_webserver.wsgi and add
 ```
