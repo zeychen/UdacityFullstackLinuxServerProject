@@ -16,76 +16,50 @@ All done in root user. If not done in root user then need to use sudo in front o
 Add grader to sudo group (<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html">citation</a>):
 
 ```usermod -aG sudo grader```
-
-Resolve host issue (<a href="http://askubuntu.com/questions/59458/error-message-when-i-run-sudo-unable-to-resolve-host-none">citation</a>):
-
-Add `ip-10-20-9-8` to end of `127.0.0.1 localhost` in /etc/hosts
-
-`reboot`
-
+Resolve host issue (<a href="http://askubuntu.com/questions/59458/error-message-when-i-run-sudo-unable-to-resolve-host-none">citation</a>): <br>
+Add `ip-10-20-9-8` to end of `127.0.0.1 localhost` in /etc/hosts<br>
+`reboot`<br>
+<br>
 Now grader can login and use sudo
 
+
 <h4>Set up SSH keys for user grader</h4>
-Create .ssh file:
+Create .ssh file:<br>
+`mkdir /home/grader/.ssh`<br>
+Create copy authorized_keys file from root:<br>
+`cp /home/root/.ssh authorized)keys /home/grader/.ssh/authorized_keys`<br>
+Set permissions for .ssh directory and authorized_key file:<br>
+`chmod 700 .ssh`<br>
+`chmod 644 .ssh/authorized_keys`<br>
 
-`mkdir /home/grader/.ssh`
-
-Create copy authorized_keys file from root:
-
-`cp /home/root/.ssh authorized)keys /home/grader/.ssh/authorized_keys`
-
-Set permissions for .ssh directory and authorized_key file:
-
-`chmod 700 .ssh`
-
-`chmod 644 .ssh/authorized_keys`
 
 <h4>Update all installed packages</h4>
-Update package indexes:
-
-`apt-get update`
-
-Upgrade installed packages
-
+Update package indexes:<br>
+`apt-get update`<br>
+Upgrade installed packages<br>
 `apt-get upgrade`
 
 <h4>Change SSH port from 22 to 2200</h4>
-Change line Port 22 to Port 2200 in /etc/ssh/sshd_config
-
-Restart SSH service:
-
+Change line Port 22 to Port 2200 in /etc/ssh/sshd_config<br>
+Restart SSH service:<br>
 ```service ssh restart```
-
-Now need to add -p 2200 to log in
+Now need to add -p 2200 to log in<br>
 
 <h4>Configure Uncomplicated Firewall (UFW)</h4>
 Block all incoming connections on all ports:
-
 ```ufw default deny incoming```
-
 Allow outgoing connection on all ports:
-
 ```ufw default allow outgoing```
-
 Allow incoming connection for SSH on port 2200:
-
 ```ufw allow 2200/tcp```
-
 Allow incoming connections for HTTP on port 80:
-
 ```ufw allow www```
-
 Allow incoming connection for NTP on port 123:
-
 ```ufw allow ntp```
-
 To check the rules that have been added before enabling the firewall use:
-
 ```ufw show added```
-
 To enable the firewall, use:
 ```ufw enable```
-
 To check the status of the firewall, use:
 ```ufw status```
 
