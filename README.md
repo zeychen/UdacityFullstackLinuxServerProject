@@ -109,9 +109,10 @@ Clone Item Catalog:
 <h4>Setup Item Catalog App (<a href="https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps">citation</a>)</h4>
 In /var/www/html/public_html/ItemCatalog/ directory:
 Create `__init__.py`
-Change `engine = create_engine('sqlite:///catagories.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')` in `__init__.py`, `items_db_query.py`, and `items_db_setup.py`
-Change `app.run(host='0.0.0.0', port=5000)` to `app.run()`
-Insert `/var/www/html/public_html/ItemCatalog/` in front of all `client_secrets.json` file location
+Change `engine = create_engine('sqlite:///catagories.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')` in `items_webserver.py`, `items_db_query.py`, and `items_db_setup.py`
+Change `app.run(host='0.0.0.0', port=5000)` to `app.run()` in `items_webserver.py`
+Take `app.secret_key` out of `if __name__ == __main__:` in `items_webserver.py`
+Insert `/var/www/html/public_html/ItemCatalog/` in front of all `client_secrets.json` file locations within `items_webserver.py`
 
 Password not shown for security reasons
 
